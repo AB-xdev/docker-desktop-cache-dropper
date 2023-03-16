@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  docker-desktop-cache-dropper:
+    container_name: "docker-desktop-cache-dropper"
+    image: alpine:3
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do echo \"Dropping cache\" && echo 3 > /proc/sys/vm/drop_caches && echo \"Dropped cache\"; sleep 5m & wait $${!}; done;'"
+    privileged: true
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 50m
